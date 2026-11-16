@@ -1,0 +1,95 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Token Radar — pre-token protocols ranked by implied value</title>
+<link rel="stylesheet" href="app.css">
+</head>
+<body>
+<header class="top">
+  <div class="brand">
+    <span class="pulse" aria-hidden="true"></span>
+    <div>
+      <h1>TOKEN RADAR</h1>
+      <p class="tag">Pre-token protocols, ranked by implied value — what a token would be worth if the protocol's record stayed as it is.</p>
+    </div>
+  </div>
+  <div class="meta" id="meta"></div>
+</header>
+<nav class="tabs" aria-label="Views">
+  <button data-tab="board" class="active">Board</button>
+  <button data-tab="live">Live tokens</button>
+  <button data-tab="model">Model &amp; comps</button>
+</nav>
+<section id="tab-board" class="tabpage">
+  <div class="controls" id="controls">
+    <input id="q" type="search" placeholder="Search name or slug…" aria-label="Search protocols">
+    <select id="cat" aria-label="Category"><option value="">All categories</option></select>
+    <select id="chain" aria-label="Chain"><option value="">All chains</option></select>
+    <select id="mom" aria-label="Momentum">
+      <option value="">Any momentum</option>
+      <option value="up">Growing (7d &gt; 0%)</option>
+      <option value="down">Falling (7d &lt; 0%)</option>
+      <option value="hot">Hot (7d &gt; +10%)</option>
+    </select>
+    <select id="sort" aria-label="Sort by">
+      <option value="implied">Sort: implied value</option>
+      <option value="tvl">Sort: TVL</option>
+      <option value="change">Sort: 7d change</option>
+      <option value="confidence">Sort: confidence</option>
+    </select>
+    <label class="check"><input type="checkbox" id="watchonly"> Watchlist only</label>
+  </div>
+  <p class="count" id="count"></p>
+  <div class="tablewrap">
+    <table id="board">
+      <thead><tr>
+        <th>#</th><th>Protocol</th><th>TVL</th><th>7d</th>
+        <th>Implied value</th><th>Band</th><th>Confidence</th><th>Multiple</th>
+      </tr></thead>
+      <tbody></tbody>
+    </table>
+  </div>
+  <p class="hint">Click a row for the detail view: model breakdown, comps and the farm plan.</p>
+</section>
+<section id="tab-live" class="tabpage" hidden>
+  <p class="lede">These protocols already have a token that trades, so the board shows the market's own value — never a model's. They are the comps the radar-2 multiples are built from.</p>
+  <div class="tablewrap">
+    <table id="livetab">
+      <thead><tr><th>Protocol</th><th>TVL</th><th>Market cap</th><th>MCap / TVL</th><th>7d</th></tr></thead>
+      <tbody></tbody>
+    </table>
+  </div>
+</section>
+<section id="tab-model" class="tabpage" hidden>
+  <div class="modelgrid">
+    <div class="card" id="model-explain"></div>
+    <div class="card">
+      <h2>Model sandbox</h2>
+      <p>Move the sliders and the board re-ranks live. The submitted board always uses the published constants below.</p>
+      <label>Multiple scale <b id="ms-val">1.00×</b><input type="range" id="ms" min="0.5" max="2" step="0.05" value="1"></label>
+      <label>Growth weight <b id="gw-val">0.50</b><input type="range" id="gw" min="0" max="1" step="0.05" value="0.5"></label>
+      <label>Maturity floor <b id="mf-val">0.60</b><input type="range" id="mf" min="0.3" max="0.9" step="0.05" value="0.6"></label>
+      <button id="sandbox-reset" type="button">Reset to published model</button>
+      <p class="sandbox-note" id="sandbox-note">Sandbox off — showing the published radar-2 board.</p>
+    </div>
+  </div>
+  <h2>Category comps — median market-cap / TVL of tokenized peers</h2>
+  <div class="tablewrap">
+    <table id="compstab">
+      <thead><tr><th>Category</th><th>Multiple</th><th>Tokenized peers</th><th>Used as</th></tr></thead>
+      <tbody></tbody>
+    </table>
+  </div>
+</section>
+<aside id="detail" class="detail" hidden aria-label="Protocol detail"></aside>
+<footer>
+  <p><b>What this board is.</b> An implied value is this entry's own claim about what a token would be worth if a protocol's record stayed as it is. It does not predict whether or when a token is issued. A protocol on this board <b>records no token</b> in its DefiLlama record — that is not proof it has none.</p>
+  <p><b>How it is scored.</b> radar-2: implied = TVL × category multiple × growth × maturity × breadth. The category multiple is the median market-cap/TVL of the tokenized protocols in that category (fewer than 3 peers: the global median). Market cap is circulating value, not fully-diluted value, so the multiples — and the implied values — read as conservative, lower-bound style estimates. The band widens as confidence falls.</p>
+  <p id="src"></p>
+</footer>
+<script src="../data.js"></script>
+<script src="app.js"></script>
+</body>
+</html>
